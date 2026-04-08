@@ -219,7 +219,7 @@ function App(){
       if(g.node===pn){
         if(pu){setScore(s=>s+300);au.current?.node();setGhosts(prev=>prev.map((gh,i)=>gh.node===g.node?{...GD[i],node:GS[i],scared:false}:gh));}
         else if(g.label==="TAX INVESTIGATION"&&rm){au.current?.shield();showPop("🛡️ RISK MANAGED! Tax investigation blocked!");}
-        else{au.current?.death();setDm(`${g.label}\nCHASED YOU DOWN!`);setScore(sc=>{setTimeout(()=>end(false,sc),100);return sc});}
+        else{au.current?.death();setDm(`${g.label}\nGOT YOU! GAME OVER!`);setScore(sc=>{setTimeout(()=>end(false,sc),100);return sc});}
       }
     }
     if(svcs.every(s=>s.collected)){setScore(sc=>{setTimeout(()=>end(true,sc),100);return sc});}
@@ -360,7 +360,7 @@ function App(){
             <div style={{marginBottom:10}}><PBLogo size={80}/></div>
             <div style={{fontSize:36,fontWeight:900,color:NEON.green,letterSpacing:4,textShadow:`0 0 30px ${NEON.green}`,marginBottom:6,fontFamily:ui}}>PB MAN</div>
             <div style={{color:"#00CFFF",fontSize:14,letterSpacing:3,marginBottom:4,fontFamily:ui}}>THE ARCADE GAME</div>
-            <div style={{color:"#555",fontSize:11,marginBottom:28,fontFamily:ui}}>COLLECT ALL SERVICES · AVOID THE TAX INSPECTORS</div>
+            <div style={{color:"#555",fontSize:11,marginBottom:28,fontFamily:ui}}>COLLECT ALL SERVICES · OUTRUN THE RISKS</div>
             <div style={{display:"flex",gap:20,marginBottom:28,flexWrap:"wrap",justifyContent:"center"}}>
               {Object.entries(NEON).map(([k,c])=>(
                 <div key={k} style={{display:"flex",alignItems:"center",gap:6}}>
@@ -392,7 +392,7 @@ function App(){
             <div style={{fontSize:48,marginBottom:8}}>💀</div>
             <div style={{fontSize:20,fontWeight:900,color:"#FF3333",letterSpacing:3,textAlign:"center",fontFamily:ui,whiteSpace:"pre-line",marginBottom:6,textShadow:"0 0 20px #FF3333",padding:"0 40px"}}>{dm}</div>
             <div style={{color:"#666",fontSize:13,fontFamily:ui,marginBottom:16}}>SCORE: {score}</div>
-            <div style={{color:"#555",fontSize:12,textAlign:"center",padding:"0 60px",marginBottom:20,fontFamily:ui}}>Don't let the tax inspectors win in real life either.</div>
+            <div style={{color:"#555",fontSize:12,textAlign:"center",padding:"0 60px",marginBottom:20,fontFamily:ui}}>Want the real‑world power‑up? We’ll help you get it right.</div>
             <a href={CTA} target="_blank" rel="noopener noreferrer" style={{display:"block",background:"#FF3333",color:"#fff",fontWeight:900,fontSize:15,padding:"12px 30px",borderRadius:8,textDecoration:"none",fontFamily:ui,letterSpacing:2,boxShadow:"0 0 24px #FF333388",textAlign:"center",marginBottom:20}}>📅 BOOK A CONSULTATION</a>
             <div style={{display:"flex",gap:12}}>
               <button onClick={start} style={{background:NEON.green,color:"#000",border:"none",borderRadius:8,padding:"12px 28px",fontWeight:900,fontSize:14,cursor:"pointer",fontFamily:ui,letterSpacing:1,boxShadow:`0 0 16px ${NEON.green}88`}}>▶ PLAY AGAIN</button>
