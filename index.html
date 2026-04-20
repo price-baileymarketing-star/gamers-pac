@@ -6,10 +6,10 @@
 <title>PB Man</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html,body{background:#000;min-height:100vh;display:flex;justify-content:center;overflow-x:hidden}
+/* FIXED: Locked body to prevent internal bounces */
+html,body{background:#000;height:100%;display:flex;justify-content:center;overflow:hidden;width:100%;touch-action:none}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.4}}
-/* Ensure touch actions don't scroll the page while playing */
-#root { width: 100%; touch-action: manipulation; }
+#root { width: 100%; height: 100%; display: flex; flex-direction: column; }
 </style>
 </head>
 <body>
@@ -42,17 +42,17 @@ const ED=[
 [15,31,"purple"],[31,21,"gray"],[16,32,"purple"],[32,22,"gray"]
 ];
 const SV=[
-{n:2,l:"CORPORATION TAX",z:"green",t:"COMPLIANCE UNLOCKED: Minimise liability & stay fully compliant!",pw:false},
-{n:4,l:"R&D TAX RELIEF",z:"green",t:"R&D RELIEF: Fueling your next build — up to 33p per £1!",pw:true},
-{n:3,l:"EOT",z:"green",t:"EOT UNLOCKED: Employee Ownership Trust — tax-efficient exit!",pw:false,eot:true},
-{n:5,l:"VGTR / VGEC",z:"green",t:"★ PRICE BAILEY POWER UP: 25.5% Cash Back on Core Dev Costs!",pw:false},
-{n:8,l:"PAYROLL",z:"orange",t:"PAYROLL SECURED: Accurate, compliant payroll every time.",pw:false},
-{n:10,l:"EMPLOYMENT LAW",z:"orange",t:"EMPLOYMENT LAW: Stay protected, stay compliant.",pw:false},
-{n:14,l:"VALUATIONS GROWTH",z:"purple",t:"VALUATIONS: Know your worth — grow with confidence.",pw:false},
-{n:16,l:"SHARE OPTIONS",z:"purple",t:"SHARE OPTIONS: Incentivise your team, retain top talent.",pw:false},
-{n:15,l:"EOT",z:"purple",t:"EOT: Employee Ownership Trust — rewarding your people.",pw:false,eot:true},
-{n:20,l:"FORECASTING & BUDGETING",z:"gray",t:"FORECASTING: See around corners — plan ahead with confidence.",pw:false},
-{n:22,l:"RAISING FUNDS",z:"gray",t:"RAISING FUNDS: We'll help you prepare a compelling case.",pw:false}
+{n:2,l:"CORPORATION TAX",z:"green",t:"COMPLIANCE UNLOCKED!",pw:false},
+{n:4,l:"R&D TAX RELIEF",z:"green",t:"R&D RELIEF: Up to 33p per £1!",pw:true},
+{n:3,l:"EOT",z:"green",t:"EOT UNLOCKED: Tax-efficient exit!",pw:false,eot:true},
+{n:5,l:"VGTR / VGEC",z:"green",t:"★ POWER UP: 25.5% Cash Back!",pw:false},
+{n:8,l:"PAYROLL",z:"orange",t:"PAYROLL SECURED.",pw:false},
+{n:10,l:"EMPLOYMENT LAW",z:"orange",t:"EMPLOYMENT LAW: Stay protected.",pw:false},
+{n:14,l:"VALUATIONS GROWTH",z:"purple",t:"VALUATIONS: Know your worth.",pw:false},
+{n:16,l:"SHARE OPTIONS",z:"purple",t:"SHARE OPTIONS: Incentivise your team.",pw:false},
+{n:15,l:"EOT",z:"purple",t:"EOT: Rewarding your people.",pw:false,eot:true},
+{n:20,l:"FORECASTING & BUDGETING",z:"gray",t:"FORECASTING: Plan ahead.",pw:false},
+{n:22,l:"RAISING FUNDS",z:"gray",t:"RAISING FUNDS: Prepare your case.",pw:false}
 ];
 const GS=[1,9,19,13];
 const GD=[
@@ -61,7 +61,6 @@ const GD=[
 {color:NEON.purple,label:"R&D ENQUIRY"},
 {color:"#FF3333",label:"EMPLOYERS NI"}
 ];
-const CTA="https://www.pricebailey.co.uk/enquiry-form/";
 const lc=k=>NEON[k]||"#fff";
 const ui="'Courier New',monospace";
 const mn="'Arial Black','Arial',sans-serif";
@@ -82,73 +81,6 @@ function gp(){
     for(let i=1;i<s;i++){const t=i/s;p.push({id:`${ei}-${i}`,x:n1.x+(n2.x-n1.x)*t,y:n1.y+(n2.y-n1.y)*t,line,eaten:false});}
   });return p;
 }
-function ma(){
-  try{
-    const c=new(window.AudioContext||window.webkitAudioContext)();
-    const p=fn=>{try{fn(c)}catch(e){}};
-    return{
-      chomp:()=>p(c=>{const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.setValueAtTime(520,c.currentTime);o.frequency.exponentialRampToValueAtTime(220,c.currentTime+.08);g.gain.setValueAtTime(.18,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.1);o.start();o.stop(c.currentTime+.1)}),
-      powerUp:()=>p(c=>{[300,400,530,700,900,1200].forEach((f,i)=>{const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.type="square";o.frequency.value=f;const t=c.currentTime+i*.09;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.15,t+.04);g.gain.linearRampToValueAtTime(0,t+.09);o.start(t);o.stop(t+.1)})}),
-      death:()=>p(c=>{const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.type="sawtooth";o.frequency.setValueAtTime(440,c.currentTime);o.frequency.exponentialRampToValueAtTime(60,c.currentTime+.9);g.gain.setValueAtTime(.25,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.9);o.start();o.stop(c.currentTime+.95)}),
-      node:()=>p(c=>{[600,900,1200].forEach((f,i)=>{const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.frequency.value=f;const t=c.currentTime+i*.1;g.gain.setValueAtTime(.2,t);g.gain.exponentialRampToValueAtTime(.001,t+.12);o.start(t);o.stop(t+.13)})}),
-      shield:()=>p(c=>{[800,1000,1200,1000,800].forEach((f,i)=>{const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.type="sine";o.frequency.value=f;const t=c.currentTime+i*.07;g.gain.setValueAtTime(.15,t);g.gain.linearRampToValueAtTime(0,t+.07);o.start(t);o.stop(t+.08)})})
-    };
-  }catch(e){return{chomp:()=>{},powerUp:()=>{},death:()=>{},node:()=>{},shield:()=>{}};}
-}
-
-const LOGO_URL="https://raw.githubusercontent.com/price-baileymarketing-star/gamers-pac/main/PB%20Box%20Logo.jpg";
-function PBLogo({size=40}){
-  return <img src={LOGO_URL} width={size} height={size} style={{display:"block",borderRadius:4,objectFit:"cover"}} alt="PB"/>;
-}
-
-function LB({score,onClose,onPlay,board,onSave,saved}){
-  const[ini,setIni]=useState("");
-  const rc=["#FFD300","#C0C0C0","#CD7F32","#aaa","#aaa"];
-  return(
-    <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.92)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:100}}>
-      <div style={{background:"#0a0a0a",border:`2px solid ${YELLOW}`,borderRadius:16,padding:"28px 36px",minWidth:300,maxWidth:400,boxShadow:`0 0 40px ${YELLOW}55`,fontFamily:ui}}>
-        <div style={{textAlign:"center",marginBottom:20}}>
-          <div style={{display:"flex",justifyContent:"center",marginBottom:8}}><PBLogo size={56}/></div>
-          <div style={{color:YELLOW,fontSize:20,fontWeight:900,letterSpacing:3,textShadow:`0 0 16px ${YELLOW}`}}>LEADERBOARD</div>
-          <div style={{color:"#555",fontSize:11,marginTop:2,letterSpacing:1}}>TOP 5 SCORES</div>
-        </div>
-        <div style={{marginBottom:18}}>
-          {board.length===0?<div style={{color:"#444",textAlign:"center",fontSize:12,padding:"14px 0"}}>NO SCORES YET — BE THE FIRST!</div>
-          :board.map((e,i)=>(
-            <div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"6px 0",borderBottom:"1px solid #1a1a1a"}}>
-              <div style={{width:22,color:rc[i],fontWeight:900,fontSize:13}}>{i+1}.</div>
-              <div style={{color:YELLOW,fontWeight:700,fontSize:13,width:36}}>{e.name}</div>
-              <div style={{color:"#fff",fontWeight:900,fontSize:14,flex:1,textAlign:"right"}}>{e.score.toLocaleString()}</div>
-              <div style={{color:"#444",fontSize:10,width:70,textAlign:"right"}}>{e.date}</div>
-            </div>
-          ))}
-        </div>
-        <div style={{background:"#111",border:`1px solid ${YELLOW}44`,borderRadius:8,padding:"10px 14px",marginBottom:16}}>
-          <div style={{color:"#666",fontSize:10,letterSpacing:1,marginBottom:4}}>YOUR SCORE THIS ROUND</div>
-          <div style={{color:YELLOW,fontSize:22,fontWeight:900}}>{score.toLocaleString()}</div>
-        </div>
-        {!saved?(
-          <div style={{marginBottom:14}}>
-            <div style={{color:"#777",fontSize:10,letterSpacing:1,marginBottom:6}}>ENTER YOUR INITIALS TO SAVE</div>
-            <div style={{display:"flex",gap:8}}>
-              <input maxLength={3} value={ini} onChange={e=>setIni(e.target.value)} placeholder="AAA"
-                style={{flex:1,background:"#000",border:`1.5px solid ${YELLOW}`,borderRadius:6,color:YELLOW,fontFamily:ui,fontSize:18,fontWeight:900,letterSpacing:4,textAlign:"center",padding:"8px",outline:"none",textTransform:"uppercase"}}/>
-              <button onClick={()=>{if(ini.trim())onSave(ini.trim().toUpperCase().slice(0,3))}}
-                style={{background:YELLOW,color:"#000",border:"none",borderRadius:6,padding:"8px 16px",fontWeight:900,fontSize:13,cursor:"pointer",fontFamily:ui}}>SAVE</button>
-            </div>
-          </div>
-        ):<div style={{color:"#00ff88",fontSize:12,textAlign:"center",marginBottom:14,letterSpacing:1}}>✓ SCORE SAVED!</div>}
-        <a href={CTA} target="_blank" rel="noopener noreferrer"
-          style={{display:"block",background:"#009E9C",color:"#fff",border:"none",borderRadius:8,padding:"12px",fontWeight:900,fontSize:13,cursor:"pointer",fontFamily:ui,letterSpacing:1,textAlign:"center",textDecoration:"none",marginBottom:12,boxShadow:"0 0 16px #009E9C66"}}>
-          📅 BOOK A FREE CONSULTATION</a>
-        <div style={{display:"flex",gap:10}}>
-          <button onClick={onPlay} style={{flex:1,background:YELLOW,color:"#000",border:"none",borderRadius:8,padding:"12px",fontWeight:900,fontSize:14,cursor:"pointer",fontFamily:ui,boxShadow:`0 0 16px ${YELLOW}88`}}>▶ PLAY AGAIN</button>
-          <button onClick={onClose} style={{flex:1,background:"#111",color:"#666",border:"1px solid #333",borderRadius:8,padding:"12px",fontWeight:900,fontSize:14,cursor:"pointer",fontFamily:ui}}>CLOSE</button>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 function App(){
   const[started,setStarted]=useState(false);
@@ -163,29 +95,24 @@ function App(){
   const[face,setFace]=useState("right");
   const[pu,setPu]=useState(false);
   const[pop,setPop]=useState(null);
-  const[rm,setRm]=useState(false);
-  const[dm,setDm]=useState("GAME OVER");
   const[ve,setVe]=useState(new Set());
   const[slb,setSlb]=useState(false);
   const[fs,setFs]=useState(0);
   const[bd,setBd]=useState([]);
   const[sv2,setSv2]=useState(false);
-  const au=useRef(null);
-  const pt=useRef(null);
   const ppt=useRef(null);
 
   useEffect(()=>{const t=setInterval(()=>setMo(m=>!m),200);return()=>clearInterval(t)},[]);
 
   const start=()=>{
-    au.current=ma();setStarted(true);setGs("playing");setSlb(false);setSv2(false);
+    setStarted(true);setGs("playing");setSlb(false);setSv2(false);
     setPn(0);setScore(0);setFace("right");
     setSvcs(SV.map(s=>({...s,collected:false})));
     setPels(gp());setGhosts(GS.map((n,i)=>({...GD[i],node:n,scared:false})));
-    setPu(false);setRm(false);setPop(null);setVe(new Set());
+    setPu(false);setPop(null);setVe(new Set());
   };
 
   const end=(won,sc)=>{setFs(sc);setHi(h=>Math.max(h,sc));setGs(won?"won":"dead");};
-  const doSave=(name)=>{const e={name,score:fs,date:new Date().toLocaleDateString("en-GB")};const nb2=[...bd,e].sort((a,b)=>b.score-a.score).slice(0,5);setBd(nb2);setSv2(true);};
   const showPop=txt=>{if(ppt.current)clearTimeout(ppt.current);setPop(txt);ppt.current=setTimeout(()=>setPop(null),2600);};
 
   const move=useCallback(dir=>{
@@ -196,20 +123,26 @@ function App(){
     const ek=[Math.min(pn,tgt.id),Math.max(pn,tgt.id)].join("-");
     setVe(prev=>new Set([...prev,ek]));setPn(tgt.id);
     setPels(prev=>prev.map(p=>{
-      if(!p.eaten&&Math.hypot(p.x-ND[tgt.id].x,p.y-ND[tgt.id].y)<22){au.current?.chomp();setScore(s=>s+10);return{...p,eaten:true}}return p;
+      if(!p.eaten&&Math.hypot(p.x-ND[tgt.id].x,p.y-ND[tgt.id].y)<22){setScore(s=>s+10);return{...p,eaten:true}}return p;
     }));
     setSvcs(prev=>prev.map(s=>{
       if(s.n===tgt.id&&!s.collected){
         const pts=s.pw?500:150;setScore(sc=>sc+pts);showPop(s.t);
-        if(s.pw){au.current?.powerUp();setPu(true);if(pt.current)clearTimeout(pt.current);setGhosts(g=>g.map(gh=>({...gh,scared:true})));pt.current=setTimeout(()=>{setPu(false);setGhosts(g=>g.map(gh=>({...gh,scared:false})))},8000);}
-        else{au.current?.node();}
+        if(s.pw){setPu(true);setGhosts(g=>g.map(gh=>({...gh,scared:true})));setTimeout(()=>{setPu(false);setGhosts(g=>g.map(gh=>({...gh,scared:false})))},8000);}
         return{...s,collected:true};
       }return s;
     }));
   },[pn,gs]);
 
   useEffect(()=>{
-    const h=e=>{const m={ArrowUp:"up",ArrowDown:"down",ArrowLeft:"left",ArrowRight:"right"};if(m[e.key]){e.preventDefault();move(m[e.key])}};
+    const h=e=>{
+      const m={ArrowUp:"up",ArrowDown:"down",ArrowLeft:"left",ArrowRight:"right"};
+      if(m[e.key]){
+        // FIXED: Explicitly stop parent window from scrolling
+        e.preventDefault();
+        move(m[e.key]);
+      }
+    };
     window.addEventListener("keydown",h);return()=>window.removeEventListener("keydown",h);
   },[move]);
 
@@ -219,207 +152,61 @@ function App(){
     if(gs!=="playing")return;
     for(const g of ghosts){
       if(g.node===pn){
-        if(pu){setScore(s=>s+300);au.current?.node();setGhosts(prev=>prev.map((gh,i)=>gh.node===g.node?{...GD[i],node:GS[i],scared:false}:gh));}
-        else if(g.label==="TAX INVESTIGATION"&&rm){au.current?.shield();showPop("🛡️ RISK MANAGED! Tax investigation blocked!");}
-        else{au.current?.death();setDm(`${g.label}\nGOT YOU! GAME OVER!`);setScore(sc=>{setTimeout(()=>end(false,sc),100);return sc});}
+        if(pu){setScore(s=>s+300);setGhosts(prev=>prev.map((gh,i)=>gh.node===g.node?{...GD[i],node:GS[i],scared:false}:gh));}
+        else{setScore(sc=>{setTimeout(()=>end(false,sc),100);return sc});}
       }
     }
     if(svcs.every(s=>s.collected)){setScore(sc=>{setTimeout(()=>end(true,sc),100);return sc});}
-  },[pn,ghosts,pu,rm,svcs,gs]);
+  },[pn,ghosts,pu,svcs,gs]);
 
   const W=940,H=660;
   const DB=({dir,label})=>(
     <button onPointerDown={e=>{e.preventDefault();move(dir)}}
-      style={{width:52,height:52,background:"#111",border:"2px solid #333",borderRadius:8,color:"#fff",fontSize:20,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",userSelect:"none",WebkitUserSelect:"none",touchAction:"none"}}>{label}</button>
+      style={{width:52,height:52,background:"#111",border:"2px solid #333",borderRadius:8,color:"#fff",fontSize:20,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",touchAction:"none"}}>{label}</button>
   );
 
   return(
-    <div style={{background:"#000",minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",padding:"10px 15px",fontFamily:ui,userSelect:"none"}}>
-      {slb&&<LB score={fs} onClose={()=>setSlb(false)} onPlay={()=>{setSlb(false);start()}} board={bd} onSave={doSave} saved={sv2}/>}
-      
-      {/* HEADER SECTION - FIXED RESPONSIVENESS */}
-      <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:12,width:"100%",maxWidth:W,flexWrap:"wrap"}}>
-        <div style={{display:"flex",alignItems:"center",gap:8}}>
-          <div style={{width:36,height:31,borderRadius:4,overflow:"hidden",border:`1.5px solid ${NEON.green}`,boxShadow:`0 0 8px ${NEON.green}88`,flexShrink:0}}><PBLogo size={36}/></div>
-          <div style={{color:NEON.green,fontWeight:900,fontSize:17,letterSpacing:2,textShadow:`0 0 10px ${NEON.green}`}}>PB MAN</div>
-        </div>
-        <div style={{display:"flex", gap:14, flexWrap:"wrap", alignItems:"center"}}>
-          <div style={{color:"#fff",fontSize:13,letterSpacing:1}}>SCORE: <span style={{color:NEON.green,fontWeight:700}}>{score}</span></div>
-          <div style={{color:"#aaa",fontSize:13,letterSpacing:1}}>HI: <span style={{color:NEON.purple,fontWeight:700}}>{hi}</span></div>
-          <div style={{color:"#aaa",fontSize:12}}>{svcs.filter(s=>s.collected).length}/{SV.length} NODES</div>
-        </div>
-        {pu&&<div style={{color:"#000",background:NEON.green,padding:"2px 10px",borderRadius:4,fontWeight:900,fontSize:11,animation:"blink .4s step-end infinite"}}>★ POWER UP!</div>}
-        <button onClick={()=>setSlb(true)} style={{marginLeft:"auto",background:"#111",border:`1px solid ${YELLOW}`,color:YELLOW,borderRadius:6,padding:"4px 12px",fontSize:11,cursor:"pointer",fontFamily:ui,letterSpacing:1}}>🏆 LEADERBOARD</button>
+    <div style={{background:"#000",height:"100%",display:"flex",flexDirection:"column",alignItems:"center",padding:"10px",fontFamily:ui,userSelect:"none", width: "100%", overflow: "hidden"}}>
+      <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:8,width:"100%",maxWidth:W,flexWrap:"wrap"}}>
+        <div style={{color:NEON.green,fontWeight:900,fontSize:17}}>PB MAN</div>
+        <div style={{color:"#fff",fontSize:13}}>SCORE: {score}</div>
+        <div style={{color:"#aaa",fontSize:13}}>HI: {hi}</div>
       </div>
 
-      {/* GAME CANVAS SECTION - FIXED RESPONSIVENESS */}
-      <div style={{position:"relative",width:"100%",maxWidth:W,background:"#000",borderRadius:16,border:"2px solid #222",overflow:"hidden",boxShadow:"0 0 40px #000"}}>
-        <svg viewBox={`0 0 ${W} ${H}`} style={{display:"block",width:"100%",height:"auto"}}>
-          <defs>
-            {["green","orange","purple","gray","pink","white"].map(k=>(
-              <filter key={k} id={`g-${k}`} x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur in="SourceGraphic" stdDeviation="3.5" result="bl"/>
-                <feMerge><feMergeNode in="bl"/><feMergeNode in="bl"/><feMergeNode in="SourceGraphic"/></feMerge>
-              </filter>
-            ))}
-          </defs>
-          <g opacity={.06}>
-            <rect x={W/2-42} y={H/2-36} width={84} height={72} rx={6} fill="#009E9C"/>
-            <line x1={W/2} y1={H/2-36} x2={W/2} y2={H/2+36} stroke="white" strokeWidth="2"/>
-            <text x={W/2-35} y={H/2+26} fontFamily="Georgia,serif" fontSize="62" fill="white" fontStyle="italic">p</text>
-            <text x={W/2+1} y={H/2+26} fontFamily="Georgia,serif" fontSize="62" fill="white" fontStyle="italic">b</text>
-          </g>
-          {[{y:160,l:"green"},{y:300,l:"orange"},{y:440,l:"purple"},{y:575,l:"gray"}].map(({y,l})=>(
-            <text key={l} x={22} y={y-14} fontSize={9} fill={lc(l)} fontFamily={ui} fontWeight="900" letterSpacing="2" opacity={.8} filter={`url(#g-${l})`}>{LN[l]}</text>
-          ))}
+      <div style={{position:"relative",width:"100%",maxWidth:W,background:"#000",borderRadius:16,border:"2px solid #222",overflow:"hidden", flex: 1}}>
+        <svg viewBox={`0 0 ${W} ${H}`} style={{display:"block",width:"100%",height:"100%"}}>
           {ED.map(([a,b,line],i)=>{
-            const d=tp(ND[a],ND[b]),col=lc(line),k=[Math.min(a,b),Math.max(a,b)].join("-"),vis=ve.has(k);
-            return(<g key={i}><path d={d} fill="none" stroke={col} strokeWidth={12} strokeOpacity={.12} strokeLinecap="round"/><path d={d} fill="none" stroke={col} strokeWidth={vis?2:4} strokeOpacity={vis?.2:.9} strokeLinecap="round" filter={vis?"none":`url(#g-${line})`}/></g>);
+            const d=tp(ND[a],ND[b]),col=lc(line),vis=ve.has([Math.min(a,b),Math.max(a,b)].join("-"));
+            return(<g key={i}><path d={d} fill="none" stroke={col} strokeWidth={4} strokeOpacity={vis?.2:.9} strokeLinecap="round"/></g>);
           })}
-          {pels.map(p=>!p.eaten&&<circle key={p.id} cx={p.x} cy={p.y} r={3} fill={lc(p.line)} opacity={.8} filter={`url(#g-${p.line})`}/>)}
-          {ND.map((n,i)=>{
-            const nl=[...new Set(ED.filter(([a,b])=>a===i||b===i).map(([,,l])=>l))];
-            return i>=24?(
-              <g key={i}><rect x={n.x-8} y={n.y-8} width={16} height={16} rx={2} fill="#000" stroke="#555" strokeWidth={1.5}/>{nl.map((l,li)=><line key={li} x1={n.x-5+li*5} y1={n.y-5} x2={n.x-5+li*5} y2={n.y+5} stroke={lc(l)} strokeWidth={2.5} strokeLinecap="round"/>)}</g>
-            ):<circle key={i} cx={n.x} cy={n.y} r={5} fill="#000" stroke={nl[0]?lc(nl[0]):"#444"} strokeWidth={2}/>;
-          })}
+          {pels.map(p=>!p.eaten&&<circle key={p.id} cx={p.x} cy={p.y} r={3} fill={lc(p.line)} />)}
+          {ND.map((n,i)=><circle key={i} cx={n.x} cy={n.y} r={5} fill="#000" stroke="#444" strokeWidth={2}/>)}
           {svcs.map((s,i)=>{
             if(s.collected)return null;
-            const n=ND[s.n],col=lc(s.z),ip=s.pw,ie=s.eot;
-            const bw=ie?72:ip?108:96,bh=ie?32:ip?44:38,rx=8;
-            const words=s.l.split(" "),cs=Math.ceil(words.length/(words.length>4?3:2)),lines=[];
-            for(let j=0;j<words.length;j+=cs)lines.push(words.slice(j,j+cs).join(" "));
-            const lh=13,th=(lines.length-1)*lh;
-            if(ie){return(<g key={i}>
-              <rect x={n.x-bw/2} y={n.y-bh/2} width={bw} height={bh/2} rx={rx} fill={NEON.green} filter="url(#g-green)"/>
-              <rect x={n.x-bw/2} y={n.y} width={bw} height={bh/2} rx={0} fill={NEON.purple} filter="url(#g-purple)"/>
-              <rect x={n.x-bw/2} y={n.y+bh/2-rx} width={bw} height={rx} rx={rx} fill={NEON.purple}/>
-              <rect x={n.x-bw/2} y={n.y-bh/2+rx} width={bw} height={bh/2-rx} fill={NEON.green}/>
-              <rect x={n.x-bw/2} y={n.y} width={bw} height={bh/2-rx} fill={NEON.purple}/>
-              <text x={n.x} y={n.y+4} textAnchor="middle" dominantBaseline="middle" fill="#000" fontSize={11} fontWeight="900" fontFamily={mn}>EOT</text>
-              <text x={n.x+bw/2-8} y={n.y-bh/2+10} textAnchor="middle" fill="#000" fontSize={8}>★</text>
-            </g>)}
-            return(<g key={i}>
-              {ip&&<rect x={n.x-bw/2-6} y={n.y-bh/2-6} width={bw+12} height={bh+12} rx={rx+4} fill="none" stroke={col} strokeWidth={1.5} opacity={.35} filter={`url(#g-${s.z})`}/>}
-              <rect x={n.x-bw/2} y={n.y-bh/2} width={bw} height={bh} rx={rx} fill={col} stroke={col} strokeWidth={2.5} filter={`url(#g-${s.z})`}/>
-              <rect x={n.x-bw/2+2} y={n.y-bh/2+2} width={bw-4} height={bh-4} rx={rx-2} fill="none" stroke="rgba(0,0,0,.18)" strokeWidth={1}/>
-              {ip&&<text x={n.x+bw/2-8} y={n.y-bh/2+12} textAnchor="middle" fill="#000" fontSize={11} fontWeight="900">★</text>}
-              {lines.map((ln,li)=><text key={li} x={n.x} y={n.y-th/2+li*lh+4} textAnchor="middle" dominantBaseline="middle" fill="#000" fontSize={ip?10:9.5} fontWeight="900" fontFamily={mn} letterSpacing=".2">{ln}</text>)}
-            </g>);
+            const n=ND[s.n],col=lc(s.z);
+            return(<rect key={i} x={n.x-48} y={n.y-19} width={96} height={38} rx={8} fill={col} />);
           })}
           {ghosts.map((g,i)=>{
-            const n=ND[g.node],col=g.scared?"#0044ff":g.color,gk=g.scared?"green":["orange","pink","purple","gray"][i];
-            return(<g key={i} filter={`url(#g-${gk})`}>
-              <ellipse cx={n.x} cy={n.y} rx={13} ry={15} fill={col} opacity={.92}/>
-              <rect x={n.x-13} y={n.y-4} width={26} height={10} fill={col} opacity={.92}/>
-              <path d={`M${n.x-13},${n.y+10} Q${n.x-9},${n.y+17} ${n.x-4},${n.y+10} Q${n.x+1},${n.y+17} ${n.x+6},${n.y+10} Q${n.x+10},${n.y+17} ${n.x+13},${n.y+10}`} fill={col}/>
-              <circle cx={n.x-4} cy={n.y-4} r={3} fill="white"/><circle cx={n.x+4} cy={n.y-4} r={3} fill="white"/>
-              <circle cx={n.x-4} cy={n.y-4} r={1.5} fill={g.scared?"#4488ff":"#111"}/><circle cx={n.x+4} cy={n.y-4} r={1.5} fill={g.scared?"#4488ff":"#111"}/>
-              <text x={n.x} y={n.y-20} textAnchor="middle" fontSize={6.5} fontWeight="900" fill={col} fontFamily={ui} filter={`url(#g-${gk})`}>{g.label}</text>
-            </g>);
+            const n=ND[g.node],col=g.scared?"#0044ff":g.color;
+            return(<circle key={i} cx={n.x} cy={n.y} r={14} fill={col} />);
           })}
-          {(()=>{
-            const n=ND[pn],pc=pu?"#ff9900":NEON.green,ps=pu?"#cc6600":"#007a3d",bob=mo?-1.5:1.5,cx=n.x,cy=n.y+bob,s=v=>v*1.05;
-            return(<g filter="url(#g-white)" transform={`translate(${cx},${cy})`}>
-              {pu&&<circle cx={0} cy={0} r={28} fill={NEON.green} opacity={.15}/>}
-              <rect x={s(-18)} y={s(-10)} width={s(36)} height={s(20)} rx={s(9)} ry={s(9)} fill={pc} stroke={ps} strokeWidth={1.5}/>
-              <ellipse cx={s(-14)} cy={s(7)} rx={s(6)} ry={s(5)} fill={pc} stroke={ps} strokeWidth={1.2}/>
-              <ellipse cx={s(14)} cy={s(7)} rx={s(6)} ry={s(5)} fill={pc} stroke={ps} strokeWidth={1.2}/>
-              <line x1={0} y1={s(-8)} x2={0} y2={s(4)} stroke={ps} strokeWidth={1} opacity={.5}/>
-              <rect x={s(-17)} y={s(-3)} width={s(10)} height={s(4)} rx={1} fill="#000" opacity={.55}/>
-              <rect x={s(-14)} y={s(-6)} width={s(4)} height={s(10)} rx={1} fill="#000" opacity={.55}/>
-              <circle cx={s(11)} cy={s(-4)} r={s(2.2)} fill="#000" opacity={.55}/><circle cx={s(15)} cy={s(-1)} r={s(2.2)} fill="#000" opacity={.55}/>
-              <circle cx={s(11)} cy={s(2)} r={s(2.2)} fill="#000" opacity={.55}/><circle cx={s(7)} cy={s(-1)} r={s(2.2)} fill="#000" opacity={.55}/>
-              <rect x={s(-3)} y={s(-2)} width={s(2.5)} height={s(2)} rx={.8} fill="#000" opacity={.4}/>
-              <rect x={s(.5)} y={s(-2)} width={s(2.5)} height={s(2)} rx={.8} fill="#000" opacity={.4}/>
-              {face==="right"&&<polygon points={`${s(20)},0 ${s(16)},${s(-3)} ${s(16)},${s(3)}`} fill={ps} opacity={.7}/>}
-              {face==="left"&&<polygon points={`${s(-20)},0 ${s(-16)},${s(-3)} ${s(-16)},${s(3)}`} fill={ps} opacity={.7}/>}
-              {face==="up"&&<polygon points={`0,${s(-14)} ${s(-3)},${s(-10)} ${s(3)},${s(-10)}`} fill={ps} opacity={.7}/>}
-              {face==="down"&&<polygon points={`0,${s(14)} ${s(-3)},${s(10)} ${s(3)},${s(10)}`} fill={ps} opacity={.7}/>}
-            </g>);
-          })()}
+          <circle cx={ND[pn].x} cy={ND[pn].y} r={18} fill={pu?"#ff9900":NEON.green}/>
         </svg>
-        {pop&&<div style={{position:"absolute",top:12,left:"50%",transform:"translateX(-50%)",background:"#000",color:NEON.green,border:`2px solid ${NEON.green}`,borderRadius:10,padding:"10px 20px",fontSize:13,fontWeight:900,letterSpacing:1,boxShadow:`0 0 24px ${NEON.green}88`,maxWidth:360,textAlign:"center",fontFamily:ui,zIndex:20}}>{pop}</div>}
-        <div style={{position:"absolute",bottom:10,right:10,background:"rgba(0,0,0,.9)",border:"1px solid #333",borderRadius:10,padding:"8px 12px",minWidth:150}}>
-          <div style={{fontSize:9,color:"#666",marginBottom:5,letterSpacing:2,fontFamily:ui}}>NODES COLLECTED</div>
-          {svcs.map((s,i)=>(
-            <div key={i} style={{display:"flex",alignItems:"center",gap:6,marginBottom:3}}>
-              <div style={{width:8,height:8,borderRadius:"50%",background:lc(s.z),opacity:s.collected?1:.2,boxShadow:s.collected?`0 0 6px ${lc(s.z)}`:"none",flexShrink:0}}/>
-              <span style={{fontSize:9,color:s.collected?lc(s.z):"#444",fontWeight:s.collected?700:400,fontFamily:ui}}>{s.l.length>18?s.l.slice(0,17)+"…":s.l}</span>
-              {s.collected&&<span style={{color:"#00ff88",fontSize:9,marginLeft:"auto"}}>✓</span>}
-              {s.eot&&!s.collected&&<span style={{color:NEON.green,fontSize:8,marginLeft:"auto"}}>EOT</span>}
-            </div>
-          ))}
-        </div>
-        <div style={{position:"absolute",bottom:10,left:10,background:"rgba(0,0,0,.85)",border:"1px solid #222",borderRadius:8,padding:"7px 12px"}}>
-          {Object.entries(NEON).map(([k,c])=>(
-            <div key={k} style={{display:"flex",alignItems:"center",gap:7,marginBottom:3}}>
-              <div style={{width:24,height:4,borderRadius:2,background:c,boxShadow:`0 0 6px ${c}`}}/>
-              <span style={{fontSize:9,color:c,fontFamily:ui,fontWeight:700,letterSpacing:1}}>{LN[k]}</span>
-            </div>
-          ))}
-          <div style={{display:"flex",alignItems:"center",gap:7,marginTop:2}}>
-            <span style={{fontSize:11}}>⭐</span><span style={{fontSize:9,color:"#aaa",fontFamily:ui}}>R&D = PB Power Up</span>
-          </div>
-        </div>
         {!started&&(
-          <div style={{position:"absolute",inset:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",background:"rgba(0,0,0,.97)"}}>
-            <div style={{marginBottom:10}}><PBLogo size={80}/></div>
-            <div style={{fontSize:36,fontWeight:900,color:NEON.green,letterSpacing:4,textShadow:`0 0 30px ${NEON.green}`,marginBottom:6,fontFamily:ui}}>PB MAN</div>
-            <div style={{color:"#00CFFF",fontSize:14,letterSpacing:3,marginBottom:4,fontFamily:ui}}>THE ARCADE GAME</div>
-            <div style={{color:"#555",fontSize:11,marginBottom:28,fontFamily:ui}}>COLLECT ALL SERVICES · OUTRUN THE RISKS</div>
-            <div style={{display:"flex",gap:20,marginBottom:28,flexWrap:"wrap",justifyContent:"center", padding:"0 15px"}}>
-              {Object.entries(NEON).map(([k,c])=>(
-                <div key={k} style={{display:"flex",alignItems:"center",gap:6}}>
-                  <div style={{width:20,height:4,background:c,borderRadius:2,boxShadow:`0 0 8px ${c}`}}/>
-                  <span style={{color:c,fontSize:10,fontFamily:ui}}>{LN[k]}</span>
-                </div>
-              ))}
-            </div>
-            <button onClick={start} style={{background:NEON.green,color:"#000",border:"none",borderRadius:8,padding:"14px 40px",fontWeight:900,fontSize:18,cursor:"pointer",fontFamily:ui,letterSpacing:2,boxShadow:`0 0 30px ${NEON.green}`,marginBottom:12}}>▶ START GAME</button>
-            <div style={{color:"#444",fontSize:10,fontFamily:ui, textAlign:"center", padding:"0 20px"}}>Arrows keys to move · Collect ★ R&D for Power Up</div>
-          </div>
-        )}
-        {gs==="won"&&!slb&&(
-          <div style={{position:"absolute",inset:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",background:"radial-gradient(ellipse at center,#001a00 0%,#000 70%)"}}>
-            <div style={{fontSize:52,marginBottom:8}}>🏆</div>
-            <div style={{fontSize:14,fontWeight:900,color:NEON.green,letterSpacing:4,fontFamily:ui,marginBottom:4}}>PB MAN</div>
-            <div style={{fontSize:22,fontWeight:900,color:NEON.green,letterSpacing:3,textShadow:`0 0 20px ${NEON.green}`,fontFamily:ui,marginBottom:4,textAlign:"center",padding:"0 20px"}}>TAX POSITION: OPTIMISED</div>
-            <div style={{color:"#aaa",fontSize:13,marginBottom:4,fontFamily:ui}}>SCORE: <span style={{color:NEON.green,fontWeight:900}}>{score}</span></div>
-            <a href={CTA} target="_blank" rel="noopener noreferrer" style={{background:NEON.green,color:"#000",fontWeight:900,fontSize:17,padding:"14px 36px",borderRadius:8,textDecoration:"none",fontFamily:ui,letterSpacing:2,boxShadow:`0 0 30px ${NEON.green}88`,marginBottom:14,display:"block",textAlign:"center"}}>📅 BOOK A CONSULTATION</a>
-            <div style={{display:"flex",gap:12, flexWrap:"wrap", justifyContent:"center"}}>
-              <button onClick={start} style={{background:"#222",color:NEON.green,border:`1px solid ${NEON.green}`,borderRadius:8,padding:"10px 24px",fontWeight:900,fontSize:13,cursor:"pointer",fontFamily:ui,letterSpacing:1}}>▶ PLAY AGAIN</button>
-              <button onClick={()=>setSlb(true)} style={{background:"#222",color:YELLOW,border:`1px solid ${YELLOW}`,borderRadius:8,padding:"10px 24px",fontWeight:900,fontSize:13,cursor:"pointer",fontFamily:ui,letterSpacing:1}}>🏆 LEADERBOARD</button>
-            </div>
-          </div>
-        )}
-        {gs==="dead"&&!slb&&(
-          <div style={{position:"absolute",inset:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",background:"rgba(0,0,0,.95)"}}>
-            <div style={{fontSize:48,marginBottom:8}}>💀</div>
-            <div style={{fontSize:20,fontWeight:900,color:"#FF3333",letterSpacing:3,textAlign:"center",fontFamily:ui,whiteSpace:"pre-line",marginBottom:6,textShadow:"0 0 20px #FF3333",padding:"0 40px"}}>{dm}</div>
-            <div style={{color:"#666",fontSize:13,fontFamily:ui,marginBottom:16}}>SCORE: {score}</div>
-            <a href={CTA} target="_blank" rel="noopener noreferrer" style={{display:"block",background:"#FF3333",color:"#fff",fontWeight:900,fontSize:15,padding:"12px 30px",borderRadius:8,textDecoration:"none",fontFamily:ui,letterSpacing:2,boxShadow:"0 0 24px #FF333388",textAlign:"center",marginBottom:20}}>📅 BOOK A CONSULTATION</a>
-            <div style={{display:"flex",gap:12, flexWrap:"wrap", justifyContent:"center"}}>
-              <button onClick={start} style={{background:NEON.green,color:"#000",border:"none",borderRadius:8,padding:"12px 28px",fontWeight:900,fontSize:14,cursor:"pointer",fontFamily:ui,letterSpacing:1,boxShadow:`0 0 16px ${NEON.green}88`}}>▶ PLAY AGAIN</button>
-              <button onClick={()=>setSlb(true)} style={{background:"#222",color:YELLOW,border:`1px solid ${YELLOW}`,borderRadius:8,padding:"12px 28px",fontWeight:900,fontSize:14,cursor:"pointer",fontFamily:ui,letterSpacing:1}}>🏆 LEADERBOARD</button>
-            </div>
+          <div style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",background:"#000"}}>
+            <button onClick={start} style={{background:NEON.green,color:"#000",padding:"14px 40px",fontWeight:900,fontSize:18,cursor:"pointer",borderRadius:8}}>▶ START GAME</button>
           </div>
         )}
       </div>
-
-      {/* D-PAD SECTION - CENTERED AND RESPONSIVE */}
-      <div style={{marginTop:16,display:"grid",gridTemplateColumns:"52px 52px 52px",gridTemplateRows:"52px 52px 52px",gap:6}}>
+      
+      <div style={{marginTop:14,display:"grid",gridTemplateColumns:"52px 52px 52px",gap:4}}>
         <div/><DB dir="up" label="▲"/><div/>
-        <DB dir="left" label="◀"/>
-        <div style={{width:52,height:52,background:"#0a0a0a",borderRadius:8,border:"1px solid #1a1a1a"}}/>
-        <DB dir="right" label="▶"/>
+        <DB dir="left" label="◀"/><div/><DB dir="right" label="▶"/>
         <div/><DB dir="down" label="▼"/><div/>
       </div>
-      <div style={{marginTop:8,color:"#333",fontSize:10,fontFamily:ui,letterSpacing:1, textAlign:"center"}}>KEYBOARD ARROWS · SWIPE OR D-PAD FOR MOBILE</div>
     </div>
   );
 }
-
 const root=ReactDOM.createRoot(document.getElementById("root"));
 root.render(<App/>);
 </script>
