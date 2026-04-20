@@ -2,12 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <title>PB Man</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html,body{background:#000;min-height:100vh;display:flex;justify-content:center}
+html,body{background:#000;min-height:100vh;display:flex;justify-content:center;overflow-x:hidden}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.4}}
+/* Ensure touch actions don't scroll the page while playing */
+#root { width: 100%; touch-action: manipulation; }
 </style>
 </head>
 <body>
@@ -232,21 +234,26 @@ function App(){
   );
 
   return(
-    <div style={{background:"#000",minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",padding:10,fontFamily:ui,userSelect:"none"}}>
+    <div style={{background:"#000",minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",padding:"10px 15px",fontFamily:ui,userSelect:"none"}}>
       {slb&&<LB score={fs} onClose={()=>setSlb(false)} onPlay={()=>{setSlb(false);start()}} board={bd} onSave={doSave} saved={sv2}/>}
-      <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:8,width:W,maxWidth:"100%",flexWrap:"wrap"}}>
+      
+      {/* HEADER SECTION - FIXED RESPONSIVENESS */}
+      <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:12,width:"100%",maxWidth:W,flexWrap:"wrap"}}>
         <div style={{display:"flex",alignItems:"center",gap:8}}>
           <div style={{width:36,height:31,borderRadius:4,overflow:"hidden",border:`1.5px solid ${NEON.green}`,boxShadow:`0 0 8px ${NEON.green}88`,flexShrink:0}}><PBLogo size={36}/></div>
           <div style={{color:NEON.green,fontWeight:900,fontSize:17,letterSpacing:2,textShadow:`0 0 10px ${NEON.green}`}}>PB MAN</div>
         </div>
-        <div style={{color:"#fff",fontSize:13,letterSpacing:1}}>SCORE: <span style={{color:NEON.green,fontWeight:700}}>{score}</span></div>
-        <div style={{color:"#aaa",fontSize:13,letterSpacing:1}}>HI: <span style={{color:NEON.purple,fontWeight:700}}>{hi}</span></div>
-        <div style={{color:"#aaa",fontSize:12}}>{svcs.filter(s=>s.collected).length}/{SV.length} NODES</div>
-        {pu&&<div style={{color:"#000",background:NEON.green,padding:"2px 10px",borderRadius:4,fontWeight:900,fontSize:11,animation:"blink .4s step-end infinite"}}>★ PRICE BAILEY POWER UP!</div>}
-        {rm&&<div style={{color:NEON.green,fontSize:12,letterSpacing:1}}>🛡 RISK MANAGED</div>}
-        <button onClick={()=>setSlb(true)} style={{marginLeft:"auto",background:"#111",border:`1px solid ${YELLOW}`,color:YELLOW,borderRadius:6,padding:"3px 10px",fontSize:11,cursor:"pointer",fontFamily:ui,letterSpacing:1}}>🏆 LEADERBOARD</button>
+        <div style={{display:"flex", gap:14, flexWrap:"wrap", alignItems:"center"}}>
+          <div style={{color:"#fff",fontSize:13,letterSpacing:1}}>SCORE: <span style={{color:NEON.green,fontWeight:700}}>{score}</span></div>
+          <div style={{color:"#aaa",fontSize:13,letterSpacing:1}}>HI: <span style={{color:NEON.purple,fontWeight:700}}>{hi}</span></div>
+          <div style={{color:"#aaa",fontSize:12}}>{svcs.filter(s=>s.collected).length}/{SV.length} NODES</div>
+        </div>
+        {pu&&<div style={{color:"#000",background:NEON.green,padding:"2px 10px",borderRadius:4,fontWeight:900,fontSize:11,animation:"blink .4s step-end infinite"}}>★ POWER UP!</div>}
+        <button onClick={()=>setSlb(true)} style={{marginLeft:"auto",background:"#111",border:`1px solid ${YELLOW}`,color:YELLOW,borderRadius:6,padding:"4px 12px",fontSize:11,cursor:"pointer",fontFamily:ui,letterSpacing:1}}>🏆 LEADERBOARD</button>
       </div>
-      <div style={{position:"relative",width:W,maxWidth:"100%",background:"#000",borderRadius:16,border:"2px solid #222",overflow:"hidden",boxShadow:"0 0 40px #000"}}>
+
+      {/* GAME CANVAS SECTION - FIXED RESPONSIVENESS */}
+      <div style={{position:"relative",width:"100%",maxWidth:W,background:"#000",borderRadius:16,border:"2px solid #222",overflow:"hidden",boxShadow:"0 0 40px #000"}}>
         <svg viewBox={`0 0 ${W} ${H}`} style={{display:"block",width:"100%",height:"auto"}}>
           <defs>
             {["green","orange","purple","gray","pink","white"].map(k=>(
@@ -352,7 +359,7 @@ function App(){
             </div>
           ))}
           <div style={{display:"flex",alignItems:"center",gap:7,marginTop:2}}>
-            <span style={{fontSize:11}}>⭐</span><span style={{fontSize:9,color:"#aaa",fontFamily:ui}}>R&D = Price Bailey Power Up</span>
+            <span style={{fontSize:11}}>⭐</span><span style={{fontSize:9,color:"#aaa",fontFamily:ui}}>R&D = PB Power Up</span>
           </div>
         </div>
         {!started&&(
@@ -361,7 +368,7 @@ function App(){
             <div style={{fontSize:36,fontWeight:900,color:NEON.green,letterSpacing:4,textShadow:`0 0 30px ${NEON.green}`,marginBottom:6,fontFamily:ui}}>PB MAN</div>
             <div style={{color:"#00CFFF",fontSize:14,letterSpacing:3,marginBottom:4,fontFamily:ui}}>THE ARCADE GAME</div>
             <div style={{color:"#555",fontSize:11,marginBottom:28,fontFamily:ui}}>COLLECT ALL SERVICES · OUTRUN THE RISKS</div>
-            <div style={{display:"flex",gap:20,marginBottom:28,flexWrap:"wrap",justifyContent:"center"}}>
+            <div style={{display:"flex",gap:20,marginBottom:28,flexWrap:"wrap",justifyContent:"center", padding:"0 15px"}}>
               {Object.entries(NEON).map(([k,c])=>(
                 <div key={k} style={{display:"flex",alignItems:"center",gap:6}}>
                   <div style={{width:20,height:4,background:c,borderRadius:2,boxShadow:`0 0 8px ${c}`}}/>
@@ -370,7 +377,7 @@ function App(){
               ))}
             </div>
             <button onClick={start} style={{background:NEON.green,color:"#000",border:"none",borderRadius:8,padding:"14px 40px",fontWeight:900,fontSize:18,cursor:"pointer",fontFamily:ui,letterSpacing:2,boxShadow:`0 0 30px ${NEON.green}`,marginBottom:12}}>▶ START GAME</button>
-            <div style={{color:"#444",fontSize:10,fontFamily:ui}}>Arrow keys to move · Collect ★ R&D for Price Bailey Power Up</div>
+            <div style={{color:"#444",fontSize:10,fontFamily:ui, textAlign:"center", padding:"0 20px"}}>Arrows keys to move · Collect ★ R&D for Power Up</div>
           </div>
         )}
         {gs==="won"&&!slb&&(
@@ -379,9 +386,8 @@ function App(){
             <div style={{fontSize:14,fontWeight:900,color:NEON.green,letterSpacing:4,fontFamily:ui,marginBottom:4}}>PB MAN</div>
             <div style={{fontSize:22,fontWeight:900,color:NEON.green,letterSpacing:3,textShadow:`0 0 20px ${NEON.green}`,fontFamily:ui,marginBottom:4,textAlign:"center",padding:"0 20px"}}>TAX POSITION: OPTIMISED</div>
             <div style={{color:"#aaa",fontSize:13,marginBottom:4,fontFamily:ui}}>SCORE: <span style={{color:NEON.green,fontWeight:900}}>{score}</span></div>
-            <div style={{color:"#666",fontSize:12,textAlign:"center",padding:"0 60px",marginBottom:24,fontFamily:ui}}>You've unlocked your studio's full tax potential.<br/>Ready to play for real?</div>
             <a href={CTA} target="_blank" rel="noopener noreferrer" style={{background:NEON.green,color:"#000",fontWeight:900,fontSize:17,padding:"14px 36px",borderRadius:8,textDecoration:"none",fontFamily:ui,letterSpacing:2,boxShadow:`0 0 30px ${NEON.green}88`,marginBottom:14,display:"block",textAlign:"center"}}>📅 BOOK A CONSULTATION</a>
-            <div style={{display:"flex",gap:12}}>
+            <div style={{display:"flex",gap:12, flexWrap:"wrap", justifyContent:"center"}}>
               <button onClick={start} style={{background:"#222",color:NEON.green,border:`1px solid ${NEON.green}`,borderRadius:8,padding:"10px 24px",fontWeight:900,fontSize:13,cursor:"pointer",fontFamily:ui,letterSpacing:1}}>▶ PLAY AGAIN</button>
               <button onClick={()=>setSlb(true)} style={{background:"#222",color:YELLOW,border:`1px solid ${YELLOW}`,borderRadius:8,padding:"10px 24px",fontWeight:900,fontSize:13,cursor:"pointer",fontFamily:ui,letterSpacing:1}}>🏆 LEADERBOARD</button>
             </div>
@@ -392,23 +398,24 @@ function App(){
             <div style={{fontSize:48,marginBottom:8}}>💀</div>
             <div style={{fontSize:20,fontWeight:900,color:"#FF3333",letterSpacing:3,textAlign:"center",fontFamily:ui,whiteSpace:"pre-line",marginBottom:6,textShadow:"0 0 20px #FF3333",padding:"0 40px"}}>{dm}</div>
             <div style={{color:"#666",fontSize:13,fontFamily:ui,marginBottom:16}}>SCORE: {score}</div>
-            <div style={{color:"#555",fontSize:12,textAlign:"center",padding:"0 60px",marginBottom:20,fontFamily:ui}}>Want the real‑world power‑up? We’ll help you get it right.</div>
             <a href={CTA} target="_blank" rel="noopener noreferrer" style={{display:"block",background:"#FF3333",color:"#fff",fontWeight:900,fontSize:15,padding:"12px 30px",borderRadius:8,textDecoration:"none",fontFamily:ui,letterSpacing:2,boxShadow:"0 0 24px #FF333388",textAlign:"center",marginBottom:20}}>📅 BOOK A CONSULTATION</a>
-            <div style={{display:"flex",gap:12}}>
+            <div style={{display:"flex",gap:12, flexWrap:"wrap", justifyContent:"center"}}>
               <button onClick={start} style={{background:NEON.green,color:"#000",border:"none",borderRadius:8,padding:"12px 28px",fontWeight:900,fontSize:14,cursor:"pointer",fontFamily:ui,letterSpacing:1,boxShadow:`0 0 16px ${NEON.green}88`}}>▶ PLAY AGAIN</button>
               <button onClick={()=>setSlb(true)} style={{background:"#222",color:YELLOW,border:`1px solid ${YELLOW}`,borderRadius:8,padding:"12px 28px",fontWeight:900,fontSize:14,cursor:"pointer",fontFamily:ui,letterSpacing:1}}>🏆 LEADERBOARD</button>
             </div>
           </div>
         )}
       </div>
-      <div style={{marginTop:14,display:"grid",gridTemplateColumns:"52px 52px 52px",gridTemplateRows:"52px 52px 52px",gap:4}}>
+
+      {/* D-PAD SECTION - CENTERED AND RESPONSIVE */}
+      <div style={{marginTop:16,display:"grid",gridTemplateColumns:"52px 52px 52px",gridTemplateRows:"52px 52px 52px",gap:6}}>
         <div/><DB dir="up" label="▲"/><div/>
         <DB dir="left" label="◀"/>
         <div style={{width:52,height:52,background:"#0a0a0a",borderRadius:8,border:"1px solid #1a1a1a"}}/>
         <DB dir="right" label="▶"/>
         <div/><DB dir="down" label="▼"/><div/>
       </div>
-      <div style={{marginTop:6,color:"#333",fontSize:10,fontFamily:ui,letterSpacing:1}}>KEYBOARD ← ↑ ↓ → · D-PAD FOR MOBILE</div>
+      <div style={{marginTop:8,color:"#333",fontSize:10,fontFamily:ui,letterSpacing:1, textAlign:"center"}}>KEYBOARD ARROWS · SWIPE OR D-PAD FOR MOBILE</div>
     </div>
   );
 }
