@@ -64,13 +64,14 @@ const CTA="https://www.pricebailey.co.uk/enquiry-form/";
 // Passes the final score + this game's URL as WPForms prefill params (same tab),
 // matching the Control Freak reference implementation.
 const FORM_BASE="https://www.pricebailey.co.uk/enquiry-form/game/";
-const SCORE_FIELD="wpf72332_23";   // score field
-const GAMEURL_FIELD="wpf72332_31"; // Game_URL field
+const SCORE_FIELD = 'wpf72332_23';                 // score field
+const GAMEURL_FIELD = 'wpf72332_31';               // Game_URL field (field id 31, from the form source)
 const GAME_URL="https://price-baileymarketing-star.github.io/gamers-pac/";
-function openEnquiryForm(sc){
-  const params=new URLSearchParams();
-  params.set(SCORE_FIELD,Math.max(0,Math.floor(sc||0)));
-  params.set(GAMEURL_FIELD,GAME_URL);
+document.getElementById('btn-form').addEventListener('click', () => {
+  Audio.resume();
+  const params = new URLSearchParams();
+  params.set(SCORE_FIELD, Math.max(0, state.score));
+  params.set(GAMEURL_FIELD, GAME_URL);
   window.location.href=FORM_BASE+"?"+params.toString(); // same tab
 }
 const LOGO="https://raw.githubusercontent.com/price-baileymarketing-star/gamers-pac/main/PB%20Box%20Logo.jpg";
